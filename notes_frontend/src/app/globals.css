@@ -1,10 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --color-primary: #000000;
-  --color-secondary: #FFFFFF;
-  --color-accent: #3B82F6;
-  --color-background: #FFFFFF;
+  /* Retro terminal-ish palette (still light, with blue/cyan accents per style guide) */
+  --bg: #f9fafb;
+  --surface: #ffffff;
+  --ink: #111827;
+  --muted: #64748b;
+
+  --primary: #3b82f6;
+  --success: #06b6d4;
+  --danger: #ef4444;
+
+  --border: rgba(17, 24, 39, 0.18);
+  --shadow: rgba(2, 6, 23, 0.18);
+
+  --radius: 12px;
+  --radius-sm: 10px;
+
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  --sans: system-ui, -apple-system, sans-serif;
 }
 
 * {
@@ -17,10 +32,187 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  background-color: var(--color-background);
-  color: var(--color-primary);
+  background: var(--bg);
+  color: var(--ink);
 }
 
 body {
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: var(--sans);
+}
+
+/* Retro scanline overlay (subtle) */
+.retro-scanlines {
+  position: relative;
+}
+.retro-scanlines::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(2, 6, 23, 0.04),
+    rgba(2, 6, 23, 0.04) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: multiply;
+  opacity: 0.35;
+}
+
+/* Panel + button primitives */
+.retro-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 30px var(--shadow);
+}
+
+.retro-panel-header {
+  border-bottom: 1px solid var(--border);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.retro-title {
+  font-family: var(--mono);
+  letter-spacing: 0.02em;
+  font-weight: 700;
+}
+
+.retro-subtitle {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.retro-btn {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: linear-gradient(to bottom, #ffffff, #f1f5f9);
+  padding: 8px 10px;
+  font-family: var(--mono);
+  font-size: 12px;
+  cursor: pointer;
+  transition: transform 80ms ease, box-shadow 120ms ease;
+}
+.retro-btn:active {
+  transform: translateY(1px);
+}
+.retro-btn-primary {
+  border-color: rgba(59, 130, 246, 0.4);
+  background: linear-gradient(to bottom, rgba(59, 130, 246, 0.18), rgba(59, 130, 246, 0.08));
+}
+.retro-btn-danger {
+  border-color: rgba(239, 68, 68, 0.45);
+  background: linear-gradient(to bottom, rgba(239, 68, 68, 0.16), rgba(239, 68, 68, 0.06));
+}
+.retro-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-family: var(--mono);
+  font-size: 12px;
+  background: #fff;
+}
+.retro-chip-active {
+  border-color: rgba(6, 182, 212, 0.55);
+  background: rgba(6, 182, 212, 0.12);
+}
+
+.retro-input,
+.retro-textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--ink);
+  padding: 10px 12px;
+  font-family: var(--mono);
+  font-size: 13px;
+  outline: none;
+}
+.retro-input:focus,
+.retro-textarea:focus {
+  border-color: rgba(59, 130, 246, 0.55);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+.retro-textarea {
+  min-height: 220px;
+  resize: vertical;
+  line-height: 1.45;
+}
+
+.retro-kbd {
+  font-family: var(--mono);
+  font-size: 11px;
+  border: 1px solid var(--border);
+  background: #fff;
+  padding: 2px 6px;
+  border-radius: 8px;
+  color: var(--muted);
+}
+
+/* Markdown preview formatting */
+.md {
+  font-family: var(--sans);
+  line-height: 1.6;
+  font-size: 14px;
+}
+.md h1,
+.md h2,
+.md h3 {
+  font-family: var(--mono);
+  letter-spacing: 0.02em;
+  margin: 0.9em 0 0.4em;
+}
+.md h1 {
+  font-size: 22px;
+}
+.md h2 {
+  font-size: 18px;
+}
+.md h3 {
+  font-size: 16px;
+}
+.md p {
+  margin: 0.5em 0;
+}
+.md code {
+  font-family: var(--mono);
+  font-size: 0.95em;
+  background: rgba(2, 6, 23, 0.05);
+  padding: 0.1em 0.3em;
+  border-radius: 6px;
+}
+.md pre {
+  background: rgba(2, 6, 23, 0.06);
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+  border-radius: 12px;
+  overflow: auto;
+}
+.md pre code {
+  background: transparent;
+  padding: 0;
+}
+.md blockquote {
+  border-left: 3px solid rgba(6, 182, 212, 0.6);
+  padding-left: 12px;
+  color: var(--muted);
+  margin: 0.8em 0;
+}
+.md ul,
+.md ol {
+  padding-left: 1.3em;
+  margin: 0.5em 0;
+}
+.md a {
+  color: var(--primary);
+  text-decoration: underline;
 }
